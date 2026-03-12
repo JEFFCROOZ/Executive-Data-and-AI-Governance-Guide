@@ -42,6 +42,37 @@ html, body, [class*="css"] {
 #MainMenu, footer, header { visibility: hidden; }
 .block-container { padding: 2rem 2rem 4rem 2rem; max-width: 900px; }
 
+/* ── Always show the sidebar re-expand arrow ── */
+[data-testid="collapsedControl"] {
+    display: flex !important;
+    visibility: visible !important;
+    background: var(--ink) !important;
+    border-radius: 0 8px 8px 0 !important;
+    color: #e2e8f0 !important;
+}
+[data-testid="collapsedControl"] svg { stroke: #e2e8f0 !important; }
+
+/* ── Home CTA buttons ── */
+.cta-row { display: flex; gap: 1rem; margin: 1.5rem 0; flex-wrap: wrap; }
+.cta-btn {
+    display: inline-block;
+    background: var(--accent);
+    color: white !important;
+    font-size: 0.9rem; font-weight: 600;
+    padding: 0.65rem 1.4rem;
+    border-radius: 8px;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: opacity 0.15s;
+}
+.cta-btn:hover { opacity: 0.88; }
+.cta-btn.secondary {
+    background: var(--surface);
+    color: var(--ink) !important;
+    border: 1px solid var(--rule);
+}
+
 /* ── Sidebar ── */
 [data-testid="stSidebar"] {
     background: var(--ink) !important;
@@ -557,9 +588,14 @@ with st.sidebar:
     st.markdown('<div class="sidebar-brand">◈ The Data Leader</div>', unsafe_allow_html=True)
     st.markdown('<div class="sidebar-sub">Sports & Entertainment Edition</div>', unsafe_allow_html=True)
 
+    # Support CTA buttons on Home jumping to another section
+    _nav_options = ["🏠  Home", "📚  Learning Path", "⚡  Quick Reference"]
+    _default_nav = st.session_state.pop("nav_jump", 0)
+
     section = st.radio(
         "",
-        ["🏠  Home", "📚  Learning Path", "⚡  Quick Reference"],
+        _nav_options,
+        index=_default_nav,
         label_visibility="collapsed"
     )
 
@@ -624,6 +660,16 @@ if section == "🏠  Home":
 
     <p>Everything here is grounded in the sports and entertainment industry. The problems, examples, and vocabulary are specific to your world: athlete biometrics, fan data, sponsorship agreements, CBAs, wearable vendors, and leagues.</p>
     """, unsafe_allow_html=True)
+
+    col_cta1, col_cta2, _ = st.columns([1.6, 1.6, 3])
+    with col_cta1:
+        if st.button("📚  Start Learning", use_container_width=True, type="primary"):
+            st.session_state["nav_jump"] = 1  # Learning Path index
+            st.rerun()
+    with col_cta2:
+        if st.button("⚡  Quick Reference", use_container_width=True):
+            st.session_state["nav_jump"] = 2  # Quick Reference index
+            st.rerun()
 
     st.markdown("## What's Inside")
 

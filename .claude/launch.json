@@ -3,7 +3,7 @@
   "configurations": [
     {
       "name": "The Data Leader (Streamlit)",
-      "runtimeExecutable": "streamlit",
+      "runtimeExecutable": "/Users/jcmbair2021/opt/anaconda3/bin/streamlit",
       "runtimeArgs": ["run", "app.py", "--server.port=8501"],
       "port": 8501
     }
