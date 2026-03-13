@@ -17,5 +17,5 @@ env/
 .vscode/
 .idea/
 
-# Claude local settings (contains machine-specific paths)
-.claude/settings.local.json
+# Claude local config (contains machine-specific paths — never publish)
+.claude/
