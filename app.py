@@ -590,12 +590,13 @@ with st.sidebar:
 
     # Support CTA buttons on Home jumping to another section
     _nav_options = ["🏠  Home", "📚  Learning Path", "⚡  Quick Reference"]
-    _default_nav = st.session_state.pop("nav_jump", 0)
+    if "nav_jump" in st.session_state:
+        st.session_state["_nav_radio"] = _nav_options[st.session_state.pop("nav_jump")]
 
     section = st.radio(
         "",
         _nav_options,
-        index=_default_nav,
+        key="_nav_radio",
         label_visibility="collapsed"
     )
 
@@ -715,8 +716,10 @@ elif section == "📚  Learning Path":
     st.markdown('<hr>', unsafe_allow_html=True)
 
     module_titles = [f"{m['eyebrow'].split('·')[0].strip()} — {m['title']}" for m in MODULES]
-    default_idx = st.session_state.pop("jump_module", 0)
-    selected_title = st.selectbox("Select a module", module_titles, index=default_idx, label_visibility="collapsed")
+    if "jump_module" in st.session_state:
+        st.session_state["_module_select"] = module_titles[st.session_state.pop("jump_module")]
+
+    selected_title = st.selectbox("Select a module", module_titles, key="_module_select", label_visibility="collapsed")
     selected_idx = module_titles.index(selected_title)
     mod = MODULES[selected_idx]
 
